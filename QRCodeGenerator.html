@@ -1,0 +1,320 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="icon" herf="data:," />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="frame_menu.css">
+    <title></title>
+    <script src="./crypt_api.js"></script>
+    <script src="./paegdata.js"></script>
+    <script src=".//encryption.js"></script>
+    <script type="module">
+    
+
+console.log("読み込み");    
+    import * as QRCode from "./qrcode.js";
+
+document.title = fdecrypt(pagetitle);
+document.getElementById("page_h1").innerText = fdecrypt(pagetitle);
+
+let insert_qr_text = "";
+function qr_insert(data_str){
+  insert_qr_text = data_str;
+  console.log("生成処理開始");
+  setTimeout(generate, 10);
+}
+ 
+
+
+const generate = () => {
+  console.log("生成実行");
+  //const scale = +document.getElementById("scale").value;
+  const scale = 50;
+  //const quarity0 = document.getElementById("quarity").value;
+  const quarity0 = "Q";
+  //const text = document.getElementById("text").value;
+  const text = insert_qr_text;
+  //const useKanji = document.getElementById("useKanji").checked;
+  const useKanji = 1;
+  const result = document.getElementById("result");
+
+  try {
+    const {frame, width, version, quarity, maskId} =
+      QRCode.qrcode(text, quarity0, useKanji);
+    
+    // 2d canvas with ImageData
+    const canvas = document.createElement("canvas");
+    const w = scale * QRCode.renderWidth(width);
+    console.log("width : " + w);
+    canvas.width = canvas.height = w;
+    console.log(canvas.width);
+    const c2d = canvas.getContext("2d");
+    const image = c2d.createImageData(w, w);
+    QRCode.render(image, frame, width, scale);
+    c2d.putImageData(image, 0, 0);
+
+    const svg = document.createElement("a");
+    svg.setAttribute("id", "QR_SVG");
+    svg.setAttribute("class", "QR_CODE_SVG");
+    // ダウンロードしないように
+    // svg.setAttribute("download", "qrcode.png");
+    // svg.href = canvas.toDataURL("image/png");
+    //svg text
+    svg.innerHTML = QRCode.svg(frame, width, scale);
+    
+    /*
+    バージョン所法の記述
+    const h3 = document.createElement("h3");
+    h3.append(`Version-Quarity (maskId): ${version}-${quarity} (${maskId})`);
+    */
+    const p = document.createElement("DIV");
+    p.setAttribute("class", "qr_link_text");
+    const span = document.createElement("a");
+    span.style.backgroundColor = "white";
+    // テキストの挿入
+    span.setAttribute("href", text);
+    span.setAttribute("target", "_brank");
+    span.innerHTML = text.replace(/ /g, "&nbsp;");
+    
+    p.append(span);
+    const div = document.createElement("div");
+    //div.append(h3, p, svg);
+    div.append(p, svg); // ダウンロードする必要がないため置き換え
+    //div.append(h3, p, svg); // ダウンロードする必要がないため置き換え
+    console.log("要素削除");
+    while( result.firstChild ){
+      result.removeChild( result.firstChild );
+    }
+
+    console.log("要素配置");
+    result.prepend(div);
+  } catch (error) {
+    const pre = document.createElement("pre");
+    pre.style.display = "block";
+    pre.textContent = `${error}\n`;
+    console.error(error);
+    result.prepend(pre);
+  }
+  svg_resize();
+};
+function svg_resize(){
+  console.log("サイズ変更");
+  let qr_element = document.getElementById("QR_SVG");
+
+  qr_element.childNodes[0].style.position = "absolute";
+  qr_element.childNodes[0].style.top = "2vh";
+  qr_element.childNodes[0].style.left = "15vw";
+  qr_element.childNodes[0].style.width = "50vw";
+  qr_element.childNodes[0].style.height = "50vh";
+  //session_start();
+}
+//document.getElementById("generate").addEventListener("click", generate);
+/*
+document.getElementById("scale").addEventListener("input", ev => {
+  document.getElementById("scaleVal").textContent = ev.target.value;
+});
+*/
+let staff_data = [["2062", "T_M"]];
+
+
+
+console.log(page_data);
+
+let main_pass = "";
+let progress = 0;
+
+function first_click(){
+  let frame_element = document.getElementById("selecter_" + progress);
+  let insert_flag = false;
+  for(let i = 0; i < page_data.length; ++i){
+    if(fdecrypt(page_data[i].pass) == main_pass){
+      let insert_element  = document.createElement("DIV");
+      insert_element.setAttribute("class", "menu_list");
+      let insert_text_element = document.createElement("DIV");
+      insert_text_element.setAttribute("class", "menu_text");
+      insert_text_element.innerText += fdecrypt(page_data[i].value);
+      insert_element.appendChild(insert_text_element, insert_element);
+      let bp = progress;
+      if(fdecrypt(page_data[i].qrcode) == ""){
+        insert_element.addEventListener("click", function(){
+          menu_click(bp, fdecrypt(page_data[i].value));
+        });
+        if(fdecrypt(page_data[i].icon_link) != ""){
+          let insert_qr_icon = document.createElement("IMG");
+          
+          insert_qr_icon.setAttribute("src", fdecrypt(page_data[i].icon_link));
+          insert_qr_icon.setAttribute("class", "menu_image_icon");
+          insert_element.insertAdjacentElement("afterbegin", insert_qr_icon);
+        }
+      }
+      else{
+        insert_element.addEventListener("click", function(){
+          qr_open(fdecrypt(page_data[i].qrcode), fdecrypt(page_data[i].staff_code), fdecrypt(page_data[i].shop_code));
+        });
+        if(fdecrypt(page_data[i].icon_link) != ""){
+          let insert_qr_icon = document.createElement("IMG");
+          insert_qr_icon.setAttribute("src", fdecrypt(page_data[i].icon_link));
+          insert_qr_icon.setAttribute("class", "menu_image_icon");
+          insert_element.insertAdjacentElement("afterbegin", insert_qr_icon);
+        }
+        else{
+          let insert_qr_icon = document.createElement("IMG");
+              insert_qr_icon.setAttribute("src", "./img/QRCODE_ICON.png");
+              insert_qr_icon.setAttribute("class", "menu_image_icon");
+              insert_element.insertAdjacentElement("afterbegin", insert_qr_icon);
+
+        }
+        insert_element.classList.add("qr_list");
+      }
+      frame_element.appendChild(insert_element, frame_element);
+      insert_flag = true;
+    }
+  }
+}
+
+first_click();
+
+function menu_click(buffer_progress, str_value){
+  console.log("現在 : " + progress + "  バッファ : " + buffer_progress);
+  if(buffer_progress == progress){
+    console.log("押されました : " + str_value);
+    let before_frame_element = document.getElementById("selecter_" + progress);
+    ++progress;
+    let insert_frame = document.createElement("DIV");
+    insert_frame.setAttribute("id", "selecter_" + progress);
+    insert_frame.setAttribute("style", "position: fixed; top: 55px; left: " + (500 * (progress)) + "px; background-color: none; display: block; width: 500px; height: calc(100% - 55px - 0%);");
+    before_frame_element.after(insert_frame);
+    let frame_element = document.getElementById("selecter_" + progress);
+    
+    main_pass = main_pass + "/" + str_value;
+    let insert_flag = false;
+    for(let i = 0; i < page_data.length; ++i){
+      if(fdecrypt(page_data[i].pass) == main_pass){
+        let insert_element  = document.createElement("DIV");
+        insert_element.setAttribute("class", "menu_list");
+        let insert_text_element = document.createElement("DIV");
+        insert_text_element.setAttribute("class", "menu_text");
+        if(fdecrypt(page_data[i].staff_code) != ""){
+          insert_text_element.innerText += fdecrypt(staff_code[fdecrypt(page_data[i].staff_code)].value);
+        }
+        else{
+          insert_text_element.innerText += fdecrypt(page_data[i].value);
+        }
+        insert_element.appendChild(insert_text_element, insert_element);
+        let bp = progress;
+        if(fdecrypt(page_data[i].qrcode) == ""){
+          insert_element.addEventListener("click", function(){
+            menu_click(bp, fdecrypt(page_data[i].value));
+          });
+          if(fdecrypt(page_data[i].icon_link) != ""){
+            let insert_qr_icon = document.createElement("IMG");
+            insert_qr_icon.setAttribute("src", fdecrypt(page_data[i].icon_link));
+            insert_qr_icon.setAttribute("class", "menu_image_icon");
+            insert_element.insertAdjacentElement("afterbegin", insert_qr_icon);
+          }
+        }
+        else{
+          insert_element.addEventListener("click", function(){
+            qr_open(fdecrypt(page_data[i].qrcode), fdecrypt(page_data[i].staff_code), fdecrypt(page_data[i].shop_code));
+          });
+          if(fdecrypt(page_data[i].icon_link) != ""){
+            let insert_qr_icon = document.createElement("IMG");
+            insert_qr_icon.setAttribute("src", fdecrypt(page_data[i].icon_link));
+            insert_qr_icon.setAttribute("class", "menu_image_icon");
+            insert_element.insertAdjacentElement("afterbegin", insert_qr_icon);
+          }
+          else{
+            let insert_qr_icon = document.createElement("IMG");
+            insert_qr_icon.setAttribute("src", "./img/QRCODE_ICON.png");
+            insert_qr_icon.setAttribute("class", "menu_image_icon");
+            insert_element.insertAdjacentElement("afterbegin", insert_qr_icon);
+          }
+          insert_element.classList.add("qr_list");
+        }
+        if(fdecrypt(page_data[i].staff_code) == input_staff_id){
+          frame_element.insertAdjacentElement("afterbegin", insert_element);
+        }
+        else{
+          frame_element.appendChild(insert_element, frame_element);
+        }
+        insert_flag = true;
+      }
+    }
+    if(insert_flag == false){
+      frame_element.remove();
+    }
+  }
+  else{
+    console.log("ロールバック");
+    console.log(buffer_progress);
+    console.log("パス : " + main_pass);
+    let buffer_mainpath_array = main_pass.split("/");
+    console.log(buffer_mainpath_array);
+    let diffirense = progress - buffer_progress;
+    let buffer_mainpath = "";
+    console.log("\n buffer_progress : " + buffer_progress);
+    for(let i = 1; i < buffer_progress + 1; ++i){
+      console.log(" + " + buffer_mainpath_array[i]);
+      buffer_mainpath = buffer_mainpath + "/" + buffer_mainpath_array[i];
+    }
+    console.log(" -> old path : " + main_pass);
+    console.log(" -> mainpath : " + buffer_mainpath);
+    main_pass = buffer_mainpath;
+    progress = buffer_progress;
+    for(let i = 0; i < diffirense; ++i){
+      let target_delete_progress = buffer_progress + i + 1; // -> 削除対象
+      console.log("target : " + target_delete_progress);
+      let target_delete_frame_element = document.getElementById("selecter_" + target_delete_progress);
+      console.log("\n\n" + target_delete_frame_element + "\n\n");
+      if(target_delete_frame_element != null){
+        target_delete_frame_element.remove();
+      }
+    }
+    console.log("2回目呼び出し");
+    menu_click(buffer_progress, str_value);
+  }
+}
+function qr_open(data_str, staff_data, shop_data){
+  console.log("QRCODE 作成 : " + data_str + " : " + staff_data + " : " + shop_data);
+  let insert_back_element  = document.createElement("DIV");
+      insert_back_element.setAttribute("class", "qr_backframe");
+      insert_back_element.setAttribute("id", "qr_backframe");
+  let insert_front_element  = document.createElement("DIV");
+      insert_front_element.setAttribute("class", "qr_frontframe");
+      insert_front_element.setAttribute("id", "qr_frontframe");
+  let insert_front_born_element  = document.createElement("DIV");
+      insert_front_born_element.setAttribute("class", "qr_closeparentbutton");
+  let insert_front_QR_element  = document.createElement("DIV");
+      insert_front_QR_element.setAttribute("class", "qr_display");
+      insert_front_QR_element.setAttribute("id", "result");
+      insert_front_QR_element.innerText = "QRコード生成中...";
+
+  let insert_front_close_element  = document.createElement("DIV");
+      insert_front_close_element.setAttribute("class", "qr_closebutton");
+      insert_front_close_element.addEventListener("click", function(){
+        qr_close();
+      });
+      insert_front_close_element.innerText = "閉じる";
+      
+  document.body.appendChild(insert_back_element, document.body);
+  insert_front_born_element.appendChild(insert_front_close_element, insert_front_born_element);
+  insert_front_born_element.appendChild(insert_front_QR_element, insert_front_born_element);
+  insert_front_element.appendChild(insert_front_born_element, insert_front_born_element);
+  //insert_front_element.appendChild(insert_front_close_element, insert_front_born_element);
+  document.body.appendChild(insert_front_element, document.body);
+
+  qr_insert(data_str);
+
+}
+function qr_close(){
+  document.getElementById("qr_backframe").remove();
+  document.getElementById("qr_frontframe").remove();
+}
+    </script>
+  </head>
+  <body style="background-color: white;">
+    <div id = "page_h1" style = "position: fixed; top: 0px; left: 0px;height: 55px; font-size: 40px;"></div>
+    <div id = "selecter_0" class = "menu_frame" style = "position: fixed; top: 55px; left: 0px; background-color: none; display: block; width: 500px; height: calc(100% - 55px - 0%);"></div>
+  </body>
+</html>
+
