@@ -182,7 +182,7 @@ function menu_click(buffer_progress, str_value){
     ++progress;
     let insert_frame = document.createElement("DIV");
     insert_frame.setAttribute("id", "selecter_" + progress);
-    insert_frame.setAttribute("style", "position: fixed; top: 55px; left: " + (500 * (progress)) + "px; background-color: none; display: block; width: 400px; height: calc(100% - 55px - 0%);");
+    insert_frame.setAttribute("style", "position: fixed; top: 55px; left: " + (350 * (progress)) + "px; background-color: none; display: block; width: 350px; height: calc(200% - 55px - 0%);");
     before_frame_element.after(insert_frame);
     let frame_element = document.getElementById("selecter_" + progress);
     
@@ -314,7 +314,7 @@ function qr_close(){
   </head>
   <body style="background-color: white;">
     <div id = "page_h1" style = "position: fixed; top: 0px; left: 0px;height: 55px; font-size: 40px;"></div>
-    <div id = "selecter_0" class = "menu_frame" style = "position: fixed; top: 55px; left: 0px; background-color: none; display: block; width: 400px; height: calc(100% - 55px - 0%);"></div>
+    <div id = "selecter_0" class = "menu_frame" style = "position: fixed; top: 55px; left: 0px; background-color: none; display: block; width: 350px; height: calc(200% - 55px - 0%);"></div>
   </body>
 </html>
 
