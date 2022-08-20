@@ -1,3 +1,4 @@
+
 .menu_list{
     height: 50px;
     font-size: 35px;
@@ -21,7 +22,7 @@
     left: 50px;
 }
 .menu_frame{
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 .qr_backframe{
     position: absolute;
