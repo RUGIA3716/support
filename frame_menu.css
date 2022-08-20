@@ -21,7 +21,7 @@
     left: 50px;
 }
 .menu_frame{
-    
+    overflow-y: auto;
 }
 .qr_backframe{
     position: absolute;
