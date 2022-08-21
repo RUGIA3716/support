@@ -1,11 +1,21 @@
 
 let crypt_flag = true;
 let buffer_pass = "";
-if(crypt_flag == true){
+let url = new URL(window.location.href);
+let params = url.searchParams;
+if(params.get("pass") == null){
     buffer_pass = window.prompt("パスワードを入力してください", "");
 }
+else{
+    buffer_pass = params.get("pass");
+}
+if(params.get("staffid") == null){
+    input_staff_id = window.prompt("スタッフIDを入れてください", "");
+}
+else{
+    input_staff_id = params.get("staffid");
+}
 
-input_staff_id = window.prompt("スタッフIDを入れてください", "");
 // パスフレーズ（暗号鍵）
 let passPhrase = buffer_pass;
 let errored = false;
