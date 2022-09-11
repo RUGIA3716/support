@@ -1,0 +1,219 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="icon" herf="data:," />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="frame_menu.css">
+    <title>QR Code generator</title>
+    <style>
+        .outerframe{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            
+            align-content: center;
+            justify-content:space-between;
+            align-items: center;
+            width: 80vw;
+            border: solid 1px grey;
+        }
+        .innerframe{
+            margin-left: 10px;
+            border: solid 1px grey;
+        }
+        .innerframebutton{
+            margin-left: 10px;
+            border: solid 1px grey;
+            cursor: pointer;
+        }
+    </style>
+    <script src = "./plame_pagedata.js"></script>
+    <script>
+        console.log("読み込み");
+        window.onload = function(){
+            createPageDataElement();
+        }
+        function createPageDataElement(){
+            for(let i = 0; i < page_data.length; ++i){
+            let insert_element = document.createElement("DIV");
+            insert_element.setAttribute("class", "outerframe");
+            insert_element.innerText = "";
+
+            let index_element = document.createElement("DIV");
+            index_element.setAttribute("class", "innerframe");
+            index_element.setAttribute("data", "index");
+            index_element.innerText = i;
+
+            let pass_element = document.createElement("DIV");
+            pass_element.setAttribute("class", "innerframe");
+            pass_element.setAttribute("data", "pass");
+            pass_element.setAttribute("contenteditable", "true");
+            pass_element.innerText = page_data[i].pass;
+            
+            let value_element = document.createElement("DIV");
+            value_element.setAttribute("class", "innerframe");
+            pass_element.setAttribute("data", "value");
+            value_element.setAttribute("contenteditable", "true");
+            value_element.innerText = page_data[i].value;
+
+            let staff_code_element = document.createElement("DIV");
+            staff_code_element.setAttribute("class", "innerframe");
+            pass_element.setAttribute("data", "staff_code");
+            staff_code_element.setAttribute("contenteditable", "true");
+            staff_code_element.innerText = page_data[i].staff_code;
+            
+            let qr_code_element = document.createElement("DIV");
+            qr_code_element.setAttribute("class", "innerframe");
+            pass_element.setAttribute("data", "qr_code");
+            qr_code_element.setAttribute("contenteditable", "true");
+            qr_code_element.innerText = page_data[i].qrcode;
+
+            let shop_code_element = document.createElement("DIV");
+            shop_code_element.setAttribute("class", "innerframe");
+            pass_element.setAttribute("data", "shop_code");
+            shop_code_element.setAttribute("contenteditable", "true");
+            shop_code_element.innerText = page_data[i].shop_code;
+
+            let icon_link_element = document.createElement("DIV");
+            icon_link_element.setAttribute("class", "innerframe");
+            pass_element.setAttribute("data", "icon_link");
+            icon_link_element.setAttribute("contenteditable", "true");
+            icon_link_element.innerText = page_data[i].icon_link;
+
+            let add_element = document.createElement("DIV");
+            add_element.setAttribute("class", "innerframebutton");
+            add_element.addEventListener('click', insert_pagedata, this);
+            add_element.innerText = "+";
+
+            let delete_element = document.createElement("DIV");
+            delete_element.setAttribute("class", "innerframebutton");
+            delete_element.addEventListener('click', delete_pagedata, this);
+            delete_element.innerText = "-";
+
+            insert_element.appendChild(index_element, insert_element);
+            insert_element.appendChild(pass_element, insert_element);
+            insert_element.appendChild(value_element, insert_element);
+            insert_element.appendChild(staff_code_element, insert_element);
+            insert_element.appendChild(qr_code_element, insert_element);
+            insert_element.appendChild(icon_link_element, insert_element);
+            insert_element.appendChild(add_element, insert_element);
+            insert_element.appendChild(delete_element, insert_element);
+            document.body.appendChild(insert_element, document.body);
+        } 
+    }
+    function insert_pagedata(event){
+        console.log("insert");
+        console.log(event.target);
+        let target_element = event.target;
+        let parent_element = target_element.parentNode;
+        console.log(parent_element);
+
+        let insert_element = document.createElement("DIV");
+            insert_element.setAttribute("class", "outerframe");
+            insert_element.innerText = "";
+
+            let index_element = document.createElement("DIV");
+            index_element.setAttribute("class", "innerframe");
+            index_element.setAttribute("data", "index");
+            index_element.innerText = "p+";
+
+            let pass_element = document.createElement("DIV");
+            pass_element.setAttribute("class", "innerframe");
+            pass_element.setAttribute("data", "pass");
+            pass_element.setAttribute("contenteditable", "true");
+            pass_element.innerText = "パス";
+            
+            let value_element = document.createElement("DIV");
+            value_element.setAttribute("class", "innerframe");
+            pass_element.setAttribute("data", "value");
+            value_element.setAttribute("contenteditable", "true");
+            value_element.innerText = "表示名";
+
+            let staff_code_element = document.createElement("DIV");
+            staff_code_element.setAttribute("class", "innerframe");
+            pass_element.setAttribute("data", "staff_code");
+            staff_code_element.setAttribute("contenteditable", "true");
+            staff_code_element.innerText = "staffcode";
+            
+            let qr_code_element = document.createElement("DIV");
+            qr_code_element.setAttribute("class", "innerframe");
+            pass_element.setAttribute("data", "qr_code");
+            qr_code_element.setAttribute("contenteditable", "true");
+            qr_code_element.innerText = "qrcode";
+
+            let shop_code_element = document.createElement("DIV");
+            shop_code_element.setAttribute("class", "innerframe");
+            pass_element.setAttribute("data", "shop_code");
+            shop_code_element.setAttribute("contenteditable", "true");
+            shop_code_element.innerText = "shopcode";
+
+            let icon_link_element = document.createElement("DIV");
+            icon_link_element.setAttribute("class", "innerframe");
+            pass_element.setAttribute("data", "icon_link");
+            icon_link_element.setAttribute("contenteditable", "true");
+            icon_link_element.innerText = "iconlink";
+
+            let add_element = document.createElement("DIV");
+            add_element.setAttribute("class", "innerframebutton");
+            add_element.addEventListener('click', insert_pagedata, this);
+            add_element.innerText = "+";
+
+            insert_element.appendChild(index_element, insert_element);
+            insert_element.appendChild(pass_element, insert_element);
+            insert_element.appendChild(value_element, insert_element);
+            insert_element.appendChild(staff_code_element, insert_element);
+            insert_element.appendChild(qr_code_element, insert_element);
+            insert_element.appendChild(icon_link_element, insert_element);
+            insert_element.appendChild(add_element, insert_element);
+            parent_element.insertAdjacentElement("afterend", insert_element);
+    }
+    function delete_pagedata(ele){
+        console.log("delete");
+        console.log(event.target);
+        let target_element = event.target;
+        let parent_element = target_element.parentNode;
+        console.log(parent_element);
+        parent_element.remove();
+    }
+    function output(){
+        console.log("出力開始");
+
+        let edit_page_data = document.querySelectorAll(".outerframe");
+        let output_edit_page_data = [];
+        for(let i = 1; i < edit_page_data.length; ++i){
+            output_edit_page_data[i] = [];
+            output_edit_page_data[i].index = i;
+            output_edit_page_data[i].pass = edit_page_data[i].childNodes[1].innerText;
+            output_edit_page_data[i].value = edit_page_data[i].childNodes[2].innerText;
+            output_edit_page_data[i].staff_code = edit_page_data[i].childNodes[3].innerText;
+            output_edit_page_data[i].qrcode = edit_page_data[i].childNodes[4].innerText;
+            output_edit_page_data[i].shop_code = edit_page_data[i].childNodes[5].innerText;
+            output_edit_page_data[i].icon_link = edit_page_data[i].childNodes[6].innerText;
+        }
+        console.log(output_edit_page_data);
+
+        let output_string = "let page_data = \n{\n";
+        for(let i = 1; i < output_edit_page_data.length; ++i){
+            output_string += "\t" + i + ": {";
+            output_string += "index: " + output_edit_page_data[i].index + ", ";
+            output_string += "pass: \"" + output_edit_page_data[i].pass + "\", ";
+            output_string += "value: \"" + output_edit_page_data[i].value + "\", ";
+            output_string += "staff_code: \"" + output_edit_page_data[i].staff_code + "\", ";
+            output_string += "qrcode: \"" + output_edit_page_data[i].qrcode + "\", ";
+            output_string += "shop_code: \"" + output_edit_page_data[i].shop_code + "\", ";
+            output_string += "icon_link: \"" + output_edit_page_data[i].icon_link + "\", ";
+            output_string += "},\n";
+        }
+        output_string += "length: " + output_edit_page_data.length + "\n};\n";
+        console.log(output_string);
+
+    }
+    </script>
+
+  </head>
+  <button onclick = "output()">出力</button>
+
+
+  </body>
+</html>
+
