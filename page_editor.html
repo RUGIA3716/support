@@ -52,25 +52,25 @@
             
             let value_element = document.createElement("DIV");
             value_element.setAttribute("class", "innerframe");
-            pass_element.setAttribute("data", "value");
+            value_element.setAttribute("data", "value");
             value_element.setAttribute("contenteditable", "true");
             value_element.innerText = page_data[i].value;
 
             let staff_code_element = document.createElement("DIV");
             staff_code_element.setAttribute("class", "innerframe");
-            pass_element.setAttribute("data", "staff_code");
+            staff_code_element.setAttribute("data", "staff_code");
             staff_code_element.setAttribute("contenteditable", "true");
             staff_code_element.innerText = page_data[i].staff_code;
             
             let qr_code_element = document.createElement("DIV");
             qr_code_element.setAttribute("class", "innerframe");
-            pass_element.setAttribute("data", "qr_code");
+            qr_code_element.setAttribute("data", "qr_code");
             qr_code_element.setAttribute("contenteditable", "true");
             qr_code_element.innerText = page_data[i].qrcode;
 
             let shop_code_element = document.createElement("DIV");
             shop_code_element.setAttribute("class", "innerframe");
-            pass_element.setAttribute("data", "shop_code");
+            shop_code_element.setAttribute("data", "shop_code");
             shop_code_element.setAttribute("contenteditable", "true");
             shop_code_element.innerText = page_data[i].shop_code;
 
@@ -95,6 +95,7 @@
             insert_element.appendChild(value_element, insert_element);
             insert_element.appendChild(staff_code_element, insert_element);
             insert_element.appendChild(qr_code_element, insert_element);
+            insert_element.appendChild(shop_code_element, insert_element);
             insert_element.appendChild(icon_link_element, insert_element);
             insert_element.appendChild(add_element, insert_element);
             insert_element.appendChild(delete_element, insert_element);
@@ -158,6 +159,11 @@
             add_element.addEventListener('click', insert_pagedata, this);
             add_element.innerText = "+";
 
+            let delete_element = document.createElement("DIV");
+            delete_element.setAttribute("class", "innerframebutton");
+            delete_element.addEventListener('click', delete_pagedata, this);
+            delete_element.innerText = "-";
+
             insert_element.appendChild(index_element, insert_element);
             insert_element.appendChild(pass_element, insert_element);
             insert_element.appendChild(value_element, insert_element);
@@ -165,6 +171,7 @@
             insert_element.appendChild(qr_code_element, insert_element);
             insert_element.appendChild(icon_link_element, insert_element);
             insert_element.appendChild(add_element, insert_element);
+            insert_element.appendChild(delete_element, insert_element);
             parent_element.insertAdjacentElement("afterend", insert_element);
     }
     function delete_pagedata(ele){
@@ -180,7 +187,7 @@
 
         let edit_page_data = document.querySelectorAll(".outerframe");
         let output_edit_page_data = [];
-        for(let i = 1; i < edit_page_data.length; ++i){
+        for(let i = 0; i < edit_page_data.length; ++i){
             output_edit_page_data[i] = [];
             output_edit_page_data[i].index = i;
             output_edit_page_data[i].pass = edit_page_data[i].childNodes[1].innerText;
@@ -193,7 +200,7 @@
         console.log(output_edit_page_data);
 
         let output_string = "let page_data = \n{\n";
-        for(let i = 1; i < output_edit_page_data.length; ++i){
+        for(let i = 0; i < output_edit_page_data.length; ++i){
             output_string += "\t" + i + ": {";
             output_string += "index: " + output_edit_page_data[i].index + ", ";
             output_string += "pass: \"" + output_edit_page_data[i].pass + "\", ";
